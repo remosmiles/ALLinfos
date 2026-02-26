@@ -3,128 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVZ URI | Digitales Kontroll-Handbuch</title>
+    <title>SVZ URI | Expertentool 2026</title>
     <style>
         :root {
             --uri-yellow: #FFD700;
             --uri-black: #1a1a1a;
             --uri-red: #d90429;
-            --uri-grey: #f4f4f9;
+            --uri-blue: #0056b3;
+            --uri-green: #27ae60;
+            --bg: #f0f2f5;
         }
-        body { font-family: 'Segoe UI', sans-serif; background: #e9ecef; margin: 0; padding: 10px; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 500px; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); overflow: hidden; min-height: 90vh; display: flex; flex-direction: column; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); margin: 0; padding: 10px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 600px; background: white; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); overflow: hidden; min-height: 95vh; display: flex; flex-direction: column; position: relative; }
         
-        header { background: var(--uri-black); color: white; padding: 20px; text-align: center; border-bottom: 4px solid var(--uri-yellow); }
-        h1 { margin: 0; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; }
+        header { background: var(--uri-black); color: white; padding: 20px; text-align: center; border-bottom: 5px solid var(--uri-yellow); }
+        .badge { background: var(--uri-yellow); color: black; padding: 4px 10px; border-radius: 5px; font-size: 0.7rem; font-weight: 900; margin-top: 5px; display: inline-block; }
 
-        .screen { display: none; padding: 20px; flex-grow: 1; animation: fadeIn 0.3s; }
+        .screen { display: none; padding: 20px; flex-grow: 1; animation: fadeIn 0.2s; }
         .screen.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .nav-btn { background: white; border: 2px solid #dee2e6; padding: 15px; border-radius: 12px; width: 100%; margin-bottom: 12px; text-align: left; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
-        .nav-btn:hover { border-color: var(--uri-black); background: var(--uri-grey); }
-        .nav-btn::after { content: '→'; color: var(--uri-yellow); font-size: 1.2rem; }
+        h2 { font-size: 1.1rem; color: var(--uri-black); border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 0; }
+        
+        .btn-list { display: flex; flex-direction: column; gap: 10px; }
+        .nav-btn { background: #fff; border: 2px solid #e9ecef; padding: 16px; border-radius: 12px; text-align: left; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s; font-size: 0.95rem; }
+        .nav-btn:hover { border-color: var(--uri-black); background: #f8f9fa; }
+        .nav-btn.danger { border-left: 6px solid var(--uri-red); }
+        .nav-btn.warning { border-left: 6px solid var(--uri-yellow); }
+        .nav-btn::after { content: '›'; color: #ccc; font-size: 1.5rem; }
 
-        .info-card { background: #f8f9fa; border-left: 5px solid var(--uri-black); padding: 15px; border-radius: 8px; margin-bottom: 20px; }
-        .info-card h3 { margin: 0 0 10px 0; font-size: 0.9rem; color: #666; text-transform: uppercase; }
-        .law-box { background: #fffbe6; padding: 10px; border-radius: 5px; border: 1px solid #ffe58f; font-size: 0.8rem; margin-top: 10px; }
+        .info-panel { background: #fff; border: 2px solid var(--uri-black); border-radius: 15px; padding: 20px; margin-top: 10px; }
+        .result-box { background: var(--uri-black); color: white; padding: 20px; border-radius: 12px; margin-top: 15px; text-align: center; }
+        .price-tag { font-size: 2.5rem; font-weight: 900; color: var(--uri-yellow); display: block; }
+        
+        .tag { font-size: 0.7rem; padding: 3px 8px; border-radius: 4px; color: white; margin-right: 5px; font-weight: bold; }
+        .tag-handbuch { background: var(--uri-blue); }
+        .tag-gesetz { background: #6c757d; }
 
-        .back-btn { background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-bottom: 20px; font-size: 0.8rem; }
-        .home-btn { background: var(--uri-black); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 20px; font-weight: bold; }
-
-        .status-tag { font-size: 0.7rem; padding: 3px 8px; border-radius: 40px; color: white; background: var(--uri-blue, #0056b3); margin-bottom: 5px; display: inline-block; }
+        .back-nav { display: flex; gap: 10px; margin-bottom: 20px; }
+        .btn-back { background: #eee; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .btn-home { background: var(--uri-black); color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="app-container">
     <header>
-        <h1>SVZ URI | Kontroll-Guide</h1>
-        <div style="font-size:0.6rem; font-weight:bold; color:var(--uri-yellow); margin-top:5px;">BASIEREND AUF HANDBUCH 2023.12</div>
+        <h1 style="margin:0; font-size:1.2rem;">SVZ URI EXPERT MASTER</h1>
+        <div class="badge">HANDBUCH 2023 & STRAFMASS 2026</div>
     </header>
 
     <div id="home" class="screen active">
-        <span style="font-size:0.75rem; font-weight:800; color:#999; display:block; margin-bottom:15px;">HAUPTGRUPPEN</span>
-        <button class="nav-btn" onclick="show('fahrzeug')">2. Fahrzeug</button>
-        <button class="nav-btn" onclick="show('lenker')">3. Fahrzeuglenker (ARV/FiaZ)</button>
-        <button class="nav-btn" onclick="show('ladung')">4. Ladung / Ladungssicherung</button>
-        <button class="nav-btn" onclick="show('adr')">4.3 ADR / SDR</button>
-        <button class="nav-btn" onclick="show('technik')">8. Fahrzeugtechnik (Bremsen/Reifen)</button>
-        <button class="nav-btn" onclick="show('checklisten')">9. Checklisten nach Fahrzeugart</button>
-    </div>
-
-    <div id="fahrzeug" class="screen">
-        <button class="back-btn" onclick="show('home')">← Zurück</button>
-        <h2>2. Fahrzeug</h2>
-        <button class="nav-btn" onclick="show('fzg_einteilung')">2.1 Fahrzeugeinteilung</button>
-        <button class="nav-btn" onclick="show('fzg_masse')">2.2 Fahrzeugabmessungen</button>
-        <button class="nav-btn" onclick="show('fzg_gewichte')">2.3 Gewichte & Lasten</button>
-    </div>
-
-    <div id="fzg_masse" class="screen">
-        <button class="back-btn" onclick="show('fahrzeug')">← Zurück</button>
-        <div class="info-card">
-            <h3>Das Wichtigste in Kürze</h3>
-            <ul>
-                <li>Messbedingungen einhalten [cite: 1467]</li>
-                <li>Nicht zu messende Teile ausblenden [cite: 1467]</li>
-                <li>Toleranzen Messsystem beachten [cite: 1467]</li>
-            </ul>
+        <h2 style="margin-top:10px;">Hauptmenü</h2>
+        <div class="btn-list">
+            <button class="nav-btn" onclick="go('masse')">⚖️ Masse & Gewichte</button>
+            <button class="nav-btn" onclick="go('arv')">🕒 ARV 1 & Tacho</button>
+            <button class="nav-btn" onclick="go('ladung')">📦 Ladung & ADR</button>
+            <button class="nav-btn" onclick="go('bremsen')">🛑 Bremsanlage (Technik)</button>
+            <button class="nav-btn" onclick="go('reifen')">🛞 Reifen & Räder</button>
+            <button class="nav-btn" onclick="go('obv')">🟢 Ordnungsbussen (OBV)</button>
         </div>
-        <button class="nav-btn" onclick="alert('Länge LW: Max 12.00m (Art. 65 VRV)')">Fahrzeuglänge</button>
-        <button class="nav-btn" onclick="alert('Breite: Max 2.55m / Klimatisiert 2.60m (Art. 64 VRV)')">Fahrzeugbreite</button>
-        <button class="nav-btn" onclick="alert('Höhe: Max 4.00m inkl. Ladung (Art. 66 VRV)')">Fahrzeughöhe</button>
-        <div class="law-box">Rechtsgrundlage: Art. 9 SVG, Art. 38 VTS [cite: 1467]</div>
     </div>
 
-    <div id="fzg_gewichte" class="screen">
-        <button class="back-btn" onclick="show('fahrzeug')">← Zurück</button>
-        <h2>2.3 Gewichte & Lasten</h2>
-        <div class="info-card">
-            <span class="status-tag">MAXIMALWERTE VRV</span><br>
-            <b>40.00 t</b> : Anhängerzüge / Sattel-Kfz <br>
-            <b>44.00 t</b> : Unbegleiteter kombinierter Verkehr [cite: 1762]<br>
-            <b>18.00 t</b> : Zweiachsige Motorwagen [cite: 1770]
+    <div id="masse" class="screen">
+        <div class="back-nav">
+            <button class="btn-back" onclick="go('home')">← Menü</button>
         </div>
-        <button class="nav-btn" onclick="alert('Achslasten: Einzel 10t, Antrieb 11.5t (Art. 67 VRV)')">Achslasten prüfen</button>
-        <button class="nav-btn" onclick="alert('Lenkachslast: Mind. 20% des Betriebsgewichts (Art. 73 VRV)')">Minimales Lenkachsgewicht</button>
+        <h2>Masse & Gewichte</h2>
+        <div class="btn-list">
+            <button class="nav-btn" onclick="showResult('Länge LW/Sattelzug', 'Max. 12.00m / 16.50m (Art. 65 VRV)', 600, 'SVG 96/1/c')">Fahrzeuglänge</button>
+            <button class="nav-btn" onclick="showResult('Breite LW', 'Max. 2.55m / Klimatisiert 2.60m', 400, 'SVG 96/1/c')">Fahrzeugbreite</button>
+            <button class="nav-btn" onclick="showResult('Gewicht LW ≤ 5%', 'Überlast bis 5% (max. 1000kg)', 250, 'OB 300.1.c')">Überlast bis 5% (OB)</button>
+            <button class="nav-btn danger" onclick="showResult('Gewicht LW > 5%', 'Überlast über 5% oder über 1000kg', 300, 'SVG 96/1/c')">Überlast > 5% (Ordentlich)</button>
+        </div>
     </div>
 
-    <div id="technik" class="screen">
-        <button class="back-btn" onclick="show('home')">← Zurück</button>
-        <h2>8. Fahrzeugtechnik</h2>
-        <button class="nav-btn" onclick="show('bremsen')">8.2 Bremsanlage</button>
-        <button class="nav-btn" onclick="show('reifen')">8.4 Reifen</button>
+    <div id="arv" class="screen">
+        <div class="back-nav">
+            <button class="btn-back" onclick="go('home')">← Menü</button>
+        </div>
+        <h2>ARV 1 & Fahrtschreiber</h2>
+        <div class="btn-list">
+            <button class="nav-btn" onclick="showResult('Tägliche Lenkzeit', 'Überschreitung pro angebrochene Stunde', 100, 'ARV 1 Art. 5')">Lenkzeitüberschreitung</button>
+            <button class="nav-btn" onclick="showResult('Wochenruhezeit', 'Verbracht in der Kabine (Verbot)', 350, 'ARV 1 Art. 11')">Ruhezeit in Kabine</button>
+            <button class="nav-btn danger" onclick="showResult('Fahrerkarte', 'Fahren ohne Karte oder fremde Karte', 500, 'ARV 1 Art. 14')">Fehlende/Fremde Karte</button>
+            <button class="nav-btn danger" onclick="showResult('Manipulation', 'Manipulation Tacho/Sensoren/RAG', 1000, 'SVG 93/2')">Tacho-Manipulation</button>
+        </div>
     </div>
 
     <div id="bremsen" class="screen">
-        <button class="back-btn" onclick="show('technik')">← Zurück</button>
-        <div class="info-card">
-            <h3>Bremsscheiben Prüfung [cite: 1339]</h3>
-            <li>Risse bis 3/4 der Breite zulässig, wenn Tiefe < 0.25mm [cite: 294]</li>
-            <li>Durchgehende Risse = Schwerer Mangel / Fahrverbot [cite: 294]</li>
+        <div class="back-nav">
+            <button class="btn-back" onclick="go('home')">← Menü</button>
         </div>
-        <div class="law-box">Grundlage: UNECE R 13 [cite: 1339]</div>
-        <button class="home-btn" onclick="show('home')">HAUPTMENÜ</button>
+        <h2>Bremsanlage (Technik)</h2>
+        <div class="btn-list">
+            <button class="nav-btn warning" onclick="showResult('Bremsscheibe Riss', 'Riss < 3/4 Breite & < 0.25mm Tiefe: Beobachten. Sonst: Defekt.', 500, 'Handbuch S. 142')">Bremsscheibe gerissen</button>
+            <button class="nav-btn danger" onclick="showResult('Bremse 1 Rad', 'Betriebsbremse ohne Funktion (1 Rad/LW)', 1000, 'SVG 93/2')">Bremse ohne Funktion (1 Rad)</button>
+            <button class="nav-btn danger" onclick="showResult('Bremse 2 Räder', 'Betriebsbremse ohne Funktion (2 Räder/LW)', 2000, 'SVG 93/2')">Bremse ohne Funktion (2 Räder)</button>
+        </div>
     </div>
 
     <div id="reifen" class="screen">
-        <button class="back-btn" onclick="show('technik')">← Zurück</button>
-        <div class="info-card">
-            <span class="status-tag">MINDESTPROFIL</span>
-            <div style="font-size:1.5rem; font-weight:bold;">1.6 mm [cite: 1841]</div>
-            <p style="font-size:0.8rem; margin-top:5px;">Gilt für alle Hauptprofilrillen über die ganze Lauffläche.</p>
+        <div class="back-nav">
+            <button class="btn-back" onclick="go('home')">← Menü</button>
         </div>
-        <button class="nav-btn" onclick="alert('Nachrillen nur bei Kennzeichnung (Regroovable) erlaubt [Art. 60 VTS]')">Nachrillen erlaubt?</button>
+        <h2>Reifen & Räder</h2>
+        <div class="btn-list">
+            <button class="nav-btn" onclick="showResult('Mindestprofil', 'Profiltiefe unter 1.6mm (1 Rad)', 100, 'OB 402.1')">Profil < 1.6mm (OB)</button>
+            <button class="nav-btn danger" onclick="showResult('Reifendefekt', 'Gewebe oder Karkasse sichtbar (LW)', 500, 'SVG 93/2')">Karkasse sichtbar</button>
+            <button class="nav-btn danger" onclick="showResult('Radbolzen', 'Radbefestigung lose oder gebrochen (LW)', 500, 'SVG 93/2')">Radbolzen lose/gebrochen</button>
+        </div>
+    </div>
+
+    <div id="result" class="screen">
+        <div class="back-nav">
+            <button class="btn-back" onclick="window.history.back()">← Zurück</button>
+            <button class="btn-home" onclick="go('home')">Haus</button>
+        </div>
+        
+        <div class="info-panel">
+            <span id="resArt" class="tag tag-gesetz">--</span>
+            <h3 id="resTitle" style="margin:10px 0;">--</h3>
+            <p id="resDesc" style="color:#555; line-height:1.4;">--</p>
+        </div>
+
+        <div class="result-box">
+            <span style="font-size:0.8rem; opacity:0.8;">BUSSEN-EMPFEHLUNG / KAUTION</span>
+            <span class="price-tag" id="resPrice">0.-</span>
+            <div id="resExtra" style="font-size:0.75rem; color:#aaa; margin-top:10px;">
+                + Gebühren StA & TB-Aufnahme bei ordentlichem Verfahren
+            </div>
+        </div>
+
+        <p style="font-size:0.7rem; color:#999; text-align:center; margin-top:20px;">
+            Grundlage: Handbuch Polizeikontrolle 12/2023 & Strafmassempfehlungen Uri 2026.
+        </p>
     </div>
 
 </div>
 
 <script>
-    function show(screenId) {
+    function go(screenId) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(screenId).classList.add('active');
         window.scrollTo(0,0);
+    }
+
+    function showResult(title, desc, price, art) {
+        document.getElementById('resTitle').innerText = title;
+        document.getElementById('resDesc').innerText = desc;
+        document.getElementById('resPrice').innerText = price + ".-";
+        document.getElementById('resArt').innerText = art;
+        
+        // Unterscheidung OB vs Ordentlich für Zusatztext
+        const extra = document.getElementById('resExtra');
+        if (art.startsWith('OB')) {
+            extra.innerText = "ORDNUNGSBUSSE: Keine Gebühren, kein TB-Zuschlag.";
+            extra.style.color = "#27ae60";
+        } else {
+            extra.innerText = "+ StA-Gebühr (ab 100.-) & TB-Aufnahme (110.- / 360.-)";
+            extra.style.color = "#aaa";
+        }
+        
+        go('result');
     }
 </script>
 
