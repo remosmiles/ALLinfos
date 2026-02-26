@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVZ URI | Digitales Kontroll-Handbuch</title>
+    <style>
+        :root {
+            --uri-yellow: #FFD700;
+            --uri-black: #1a1a1a;
+            --uri-red: #d90429;
+            --uri-grey: #f4f4f9;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background: #e9ecef; margin: 0; padding: 10px; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 500px; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); overflow: hidden; min-height: 90vh; display: flex; flex-direction: column; }
+        
+        header { background: var(--uri-black); color: white; padding: 20px; text-align: center; border-bottom: 4px solid var(--uri-yellow); }
+        h1 { margin: 0; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        .screen { display: none; padding: 20px; flex-grow: 1; animation: fadeIn 0.3s; }
+        .screen.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .nav-btn { background: white; border: 2px solid #dee2e6; padding: 15px; border-radius: 12px; width: 100%; margin-bottom: 12px; text-align: left; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+        .nav-btn:hover { border-color: var(--uri-black); background: var(--uri-grey); }
+        .nav-btn::after { content: '→'; color: var(--uri-yellow); font-size: 1.2rem; }
+
+        .info-card { background: #f8f9fa; border-left: 5px solid var(--uri-black); padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .info-card h3 { margin: 0 0 10px 0; font-size: 0.9rem; color: #666; text-transform: uppercase; }
+        .law-box { background: #fffbe6; padding: 10px; border-radius: 5px; border: 1px solid #ffe58f; font-size: 0.8rem; margin-top: 10px; }
+
+        .back-btn { background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-bottom: 20px; font-size: 0.8rem; }
+        .home-btn { background: var(--uri-black); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 20px; font-weight: bold; }
+
+        .status-tag { font-size: 0.7rem; padding: 3px 8px; border-radius: 40px; color: white; background: var(--uri-blue, #0056b3); margin-bottom: 5px; display: inline-block; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <header>
+        <h1>SVZ URI | Kontroll-Guide</h1>
+        <div style="font-size:0.6rem; font-weight:bold; color:var(--uri-yellow); margin-top:5px;">BASIEREND AUF HANDBUCH 2023.12</div>
+    </header>
+
+    <div id="home" class="screen active">
+        <span style="font-size:0.75rem; font-weight:800; color:#999; display:block; margin-bottom:15px;">HAUPTGRUPPEN</span>
+        <button class="nav-btn" onclick="show('fahrzeug')">2. Fahrzeug</button>
+        <button class="nav-btn" onclick="show('lenker')">3. Fahrzeuglenker (ARV/FiaZ)</button>
+        <button class="nav-btn" onclick="show('ladung')">4. Ladung / Ladungssicherung</button>
+        <button class="nav-btn" onclick="show('adr')">4.3 ADR / SDR</button>
+        <button class="nav-btn" onclick="show('technik')">8. Fahrzeugtechnik (Bremsen/Reifen)</button>
+        <button class="nav-btn" onclick="show('checklisten')">9. Checklisten nach Fahrzeugart</button>
+    </div>
+
+    <div id="fahrzeug" class="screen">
+        <button class="back-btn" onclick="show('home')">← Zurück</button>
+        <h2>2. Fahrzeug</h2>
+        <button class="nav-btn" onclick="show('fzg_einteilung')">2.1 Fahrzeugeinteilung</button>
+        <button class="nav-btn" onclick="show('fzg_masse')">2.2 Fahrzeugabmessungen</button>
+        <button class="nav-btn" onclick="show('fzg_gewichte')">2.3 Gewichte & Lasten</button>
+    </div>
+
+    <div id="fzg_masse" class="screen">
+        <button class="back-btn" onclick="show('fahrzeug')">← Zurück</button>
+        <div class="info-card">
+            <h3>Das Wichtigste in Kürze</h3>
+            <ul>
+                <li>Messbedingungen einhalten [cite: 1467]</li>
+                <li>Nicht zu messende Teile ausblenden [cite: 1467]</li>
+                <li>Toleranzen Messsystem beachten [cite: 1467]</li>
+            </ul>
+        </div>
+        <button class="nav-btn" onclick="alert('Länge LW: Max 12.00m (Art. 65 VRV)')">Fahrzeuglänge</button>
+        <button class="nav-btn" onclick="alert('Breite: Max 2.55m / Klimatisiert 2.60m (Art. 64 VRV)')">Fahrzeugbreite</button>
+        <button class="nav-btn" onclick="alert('Höhe: Max 4.00m inkl. Ladung (Art. 66 VRV)')">Fahrzeughöhe</button>
+        <div class="law-box">Rechtsgrundlage: Art. 9 SVG, Art. 38 VTS [cite: 1467]</div>
+    </div>
+
+    <div id="fzg_gewichte" class="screen">
+        <button class="back-btn" onclick="show('fahrzeug')">← Zurück</button>
+        <h2>2.3 Gewichte & Lasten</h2>
+        <div class="info-card">
+            <span class="status-tag">MAXIMALWERTE VRV</span><br>
+            <b>40.00 t</b> : Anhängerzüge / Sattel-Kfz <br>
+            <b>44.00 t</b> : Unbegleiteter kombinierter Verkehr [cite: 1762]<br>
+            <b>18.00 t</b> : Zweiachsige Motorwagen [cite: 1770]
+        </div>
+        <button class="nav-btn" onclick="alert('Achslasten: Einzel 10t, Antrieb 11.5t (Art. 67 VRV)')">Achslasten prüfen</button>
+        <button class="nav-btn" onclick="alert('Lenkachslast: Mind. 20% des Betriebsgewichts (Art. 73 VRV)')">Minimales Lenkachsgewicht</button>
+    </div>
+
+    <div id="technik" class="screen">
+        <button class="back-btn" onclick="show('home')">← Zurück</button>
+        <h2>8. Fahrzeugtechnik</h2>
+        <button class="nav-btn" onclick="show('bremsen')">8.2 Bremsanlage</button>
+        <button class="nav-btn" onclick="show('reifen')">8.4 Reifen</button>
+    </div>
+
+    <div id="bremsen" class="screen">
+        <button class="back-btn" onclick="show('technik')">← Zurück</button>
+        <div class="info-card">
+            <h3>Bremsscheiben Prüfung [cite: 1339]</h3>
+            <li>Risse bis 3/4 der Breite zulässig, wenn Tiefe < 0.25mm [cite: 294]</li>
+            <li>Durchgehende Risse = Schwerer Mangel / Fahrverbot [cite: 294]</li>
+        </div>
+        <div class="law-box">Grundlage: UNECE R 13 [cite: 1339]</div>
+        <button class="home-btn" onclick="show('home')">HAUPTMENÜ</button>
+    </div>
+
+    <div id="reifen" class="screen">
+        <button class="back-btn" onclick="show('technik')">← Zurück</button>
+        <div class="info-card">
+            <span class="status-tag">MINDESTPROFIL</span>
+            <div style="font-size:1.5rem; font-weight:bold;">1.6 mm [cite: 1841]</div>
+            <p style="font-size:0.8rem; margin-top:5px;">Gilt für alle Hauptprofilrillen über die ganze Lauffläche.</p>
+        </div>
+        <button class="nav-btn" onclick="alert('Nachrillen nur bei Kennzeichnung (Regroovable) erlaubt [Art. 60 VTS]')">Nachrillen erlaubt?</button>
+    </div>
+
+</div>
+
+<script>
+    function show(screenId) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(screenId).classList.add('active');
+        window.scrollTo(0,0);
+    }
+</script>
+
+</body>
+</html>
